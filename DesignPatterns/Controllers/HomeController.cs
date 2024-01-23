@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using DesignPatterns.FactoryMethod;
+using DesignPatterns.ModelBuilder;
 
 namespace DesignPatterns.Controllers
 {
@@ -35,14 +37,24 @@ namespace DesignPatterns.Controllers
         [HttpGet]
         public IActionResult AddMustang()
         {
-            _vehicleRepository.AddVehicle(new Car("red","Ford","Mustang"));
+            var builder = new CarBuilder();
+            _vehicleRepository.AddVehicle(builder.Build());
             return Redirect("/");
         }
 
         [HttpGet]
         public IActionResult AddExplorer()
         {
-            _vehicleRepository.AddVehicle(new Car("red", "Ford", "Explorer"));
+            var builder = new CarBuilder();
+            _vehicleRepository.AddVehicle(builder.SetModel("Explorer").Build());
+            return Redirect("/");
+        }
+
+        [HttpGet]
+        public IActionResult AddEscape()
+        {
+            var vehicle = FactoryM.CreateVehicle("Escape", "Red", "Ford", DateTime.Now.Year);
+            _vehicleRepository.AddVehicle(vehicle);
             return Redirect("/");
         }
 
